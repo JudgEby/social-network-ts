@@ -1,4 +1,15 @@
 .nav {
     grid-area: n;
     background-color: #a4d5a8;
+    padding: 20px;
+}
+
+.nav a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.nav a.active {
+    color: darkgoldenrod;
+    font-weight: bold;
 }
