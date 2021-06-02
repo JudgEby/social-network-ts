@@ -6,7 +6,7 @@ type PropsType = {
   likesCount: number
 }
 
-const Post: React.FC<PropsType> = (props) => {
+const Post = (props: PropsType) => {
   return (
     <div>
       <div className={s.item}>{props.message}</div>

@@ -3,11 +3,15 @@
     grid-template-columns: 2fr 10fr;
 }
 
-.dialogsItem {
+.dialogsItems {
 
 }
 
-.dialogsItem .active{
+.dialog a {
+    text-decoration: none;
+}
+
+.dialogsItems .active{
     color: plum;
     font-weight: bold;
 }
