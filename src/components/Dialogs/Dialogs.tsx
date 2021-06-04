@@ -3,21 +3,26 @@ import s from './Dialogs.module.css'
 import DialogItem from './DialogItem/DialogItem'
 import Message from './Message/Message'
 
-const Dialogs = () => {
-  let dialogs = [
-    { id: 1, name: 'Yan' },
-    { id: 2, name: 'Los' },
-    { id: 3, name: 'Nadya' },
-    { id: 4, name: 'Zhenya' },
-    { id: 5, name: 'Mama' },
-  ]
+type DialogsPT = {
+  state: SatePT
+}
 
-  let messages = [
-    { id: 1, message: 'Hi' },
-    { id: 2, message: 'London is a capital of Great Britain' },
-    { id: 3, message: 'Hello! Yo!' },
-  ]
+type SatePT = {
+  dialogs: Array<DialogsFromPropsPT>
+  messages: Array<MessagesPT>
+}
 
+type DialogsFromPropsPT = {
+  id: number
+  name: string
+}
+
+type MessagesPT = {
+  id: number
+  message: string
+}
+
+const Dialogs = ({ state: { dialogs, messages } }: DialogsPT) => {
   let dialogsElements = dialogs.map((dialog) => (
     <DialogItem key={dialog.id} name={dialog.name} id={dialog.id} />
   ))

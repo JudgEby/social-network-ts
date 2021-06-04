@@ -3,12 +3,21 @@ import s from './Profile.module.css'
 import MyPosts from './MyPosts/MyPosts'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
 
-const Profile = () => {
-  let posts = [
-    { id: 1, message: 'Hi! How are you?', likesCount: 15 },
-    { id: 2, message: 'Hello! All is good!', likesCount: 10 },
-  ]
+type ProfilePT = {
+  state: StatePT
+}
 
+type StatePT = {
+  posts: Array<PostsPT>
+}
+
+type PostsPT = {
+  id: number
+  message: string
+  likesCount: number
+}
+
+const Profile = ({ state: { posts } }: ProfilePT) => {
   return (
     <div className={s.content}>
       <ProfileInfo />
