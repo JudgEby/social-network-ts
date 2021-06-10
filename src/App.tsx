@@ -8,43 +8,15 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import News from './components/News/News'
 import Music from './components/Music/Music'
 import Settings from './components/Settings/Settings'
-import state from './redux/state'
 
-type AppPT = {
-  state: AppStatePT
+import { RootStateType } from './redux/state'
+
+type AppType = {
+  state: RootStateType
+  addPost: (postMessage: string) => void
 }
 
-type AppStatePT = {
-  profilePage: PostsPagePT
-  messagesPage: MessagesPagePT
-}
-
-type PostsPagePT = {
-  posts: Array<PostsPT>
-}
-
-type MessagesPagePT = {
-  dialogs: Array<DialogsFromPropsPT>
-  messages: Array<MessagesPT>
-}
-
-type PostsPT = {
-  id: number
-  message: string
-  likesCount: number
-}
-
-type DialogsFromPropsPT = {
-  id: number
-  name: string
-}
-
-type MessagesPT = {
-  id: number
-  message: string
-}
-
-function App({ state: { profilePage, messagesPage } }: AppPT) {
+function App({ state: { profilePage, messagesPage }, addPost }: AppType) {
   return (
     <BrowserRouter>
       <div className={'app-wrapper'}>
@@ -53,7 +25,7 @@ function App({ state: { profilePage, messagesPage } }: AppPT) {
         <div className={'app-wrapper-content'}>
           <Route
             path={'/profile'}
-            render={() => <Profile state={profilePage} />}
+            render={() => <Profile state={profilePage} addPost={addPost} />}
           />
           <Route
             path={'/dialogs'}

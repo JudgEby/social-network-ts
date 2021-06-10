@@ -13,28 +13,41 @@ type SatePT = {
 }
 
 type DialogsFromPropsPT = {
-  id: number
+  id: number | string
   name: string
 }
 
 type MessagesPT = {
-  id: number
+  id: number | string
   message: string
 }
 
 const Dialogs = ({ state: { dialogs, messages } }: DialogsPT) => {
-  let dialogsElements = dialogs.map((dialog) => (
+  const dialogsElements = dialogs.map((dialog) => (
     <DialogItem key={dialog.id} name={dialog.name} id={dialog.id} />
   ))
 
-  let messagesElements = messages.map((message) => (
+  const messagesElements = messages.map((message) => (
     <Message key={message.id} message={message.message} id={message.id} />
   ))
+
+  const newMessageElement = React.createRef<HTMLTextAreaElement>()
+
+  const addPost = () => {
+    let text = newMessageElement.current?.value
+    console.log(text)
+  }
 
   return (
     <div className={s.dialogs}>
       <div className={s.dialogsItems}>{dialogsElements}</div>
-      <div className={s.messages}>{messagesElements}</div>
+      <div>
+        <div className={s.messages}>{messagesElements}</div>
+        <textarea ref={newMessageElement} />
+        <div>
+          <button onClick={addPost}>Add message</button>
+        </div>
+      </div>
     </div>
   )
 }

@@ -4,24 +4,45 @@ import Post from './Post/Post'
 
 type MyPostsPT = {
   posts: Array<PostsPT>
+  addPost: (postMessage: string) => void
 }
 
 type PostsPT = {
-  id: number
+  id: number | string
   message: string
   likesCount: number
 }
 
-const MyPosts = ({ posts }: MyPostsPT) => {
+const MyPosts = ({ posts, addPost }: MyPostsPT) => {
   const postsElements = posts.map((post) => (
     <Post key={post.id} message={post.message} likesCount={post.likesCount} />
   ))
 
+  const newPostElement: React.RefObject<HTMLTextAreaElement> = React.createRef()
+
+  /*const addPost = () => {
+    let text = newPostElement.current?.value
+    console.log(text)
+  }*/
+
   return (
     <div>
+      <h3>My Posts</h3>
       <div>
-        My Posts
-        <div className={s.posts}>New Post</div>
+        <textarea ref={newPostElement} />
+        <div>
+          <button
+            onClick={() =>
+              addPost(
+                newPostElement.current ? newPostElement.current?.value : ''
+              )
+            }
+          >
+            Add Post
+          </button>
+        </div>
+      </div>
+      <div>
         <div>{postsElements}</div>
       </div>
     </div>

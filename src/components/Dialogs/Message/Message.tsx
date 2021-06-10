@@ -3,7 +3,7 @@ import s from '../Dialogs.module.css'
 
 type MessageProps = {
   message: string
-  id: number
+  id: number | string
 }
 
 const Message = ({ message }: MessageProps) => {
