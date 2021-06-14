@@ -1,9 +1,18 @@
+let rerenderEntireTree = (state: RootStateType) => {
+  console.log('State was changed')
+}
+
 export type RootStateType = {
   profilePage: ProfilePageType
   messagesPage: MessagesPageType
+  temp: TempType
 }
 
-type ProfilePageType = {
+type TempType = {
+  postTextareaValue: string
+}
+
+export type ProfilePageType = {
   posts: PostType[]
 }
 
@@ -12,7 +21,7 @@ type MessagesPageType = {
   messages: MessagesType[]
 }
 
-type PostType = {
+export type PostType = {
   id: number | string
   message: string
   likesCount: number
@@ -49,11 +58,29 @@ let state: RootStateType = {
       { id: 3, message: 'Hello! Yo!' },
     ],
   },
+  temp: {
+    postTextareaValue: '',
+  },
 }
 
-export const addPost = (postMessage: string): void => {
-  const newPost: PostType = { id: 3, message: postMessage, likesCount: 0 }
+export const updateNewPostText = (textareaValue: string): void => {
+  state.temp.postTextareaValue = textareaValue
+  rerenderEntireTree(state)
+}
+
+export const addPost = (): void => {
+  const newPost: PostType = {
+    id: 3,
+    message: state.temp.postTextareaValue,
+    likesCount: 0,
+  }
   state.profilePage.posts.push(newPost)
+  state.temp.postTextareaValue = ''
+  rerenderEntireTree(state)
+}
+
+export const subscribe = (observer: (state: RootStateType) => void) => {
+  rerenderEntireTree = observer
 }
 
 export default state

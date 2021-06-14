@@ -13,10 +13,19 @@ import { RootStateType } from './redux/state'
 
 type AppType = {
   state: RootStateType
-  addPost: (postMessage: string) => void
+  addPost: () => void
+  updateNewPostText: (text: string) => void
 }
 
-function App({ state: { profilePage, messagesPage }, addPost }: AppType) {
+function App({
+  state: {
+    profilePage,
+    messagesPage,
+    temp: { postTextareaValue },
+  },
+  addPost,
+  updateNewPostText,
+}: AppType) {
   return (
     <BrowserRouter>
       <div className={'app-wrapper'}>
@@ -25,7 +34,14 @@ function App({ state: { profilePage, messagesPage }, addPost }: AppType) {
         <div className={'app-wrapper-content'}>
           <Route
             path={'/profile'}
-            render={() => <Profile state={profilePage} addPost={addPost} />}
+            render={() => (
+              <Profile
+                profilePage={profilePage}
+                addPost={addPost}
+                postTextareaValue={postTextareaValue}
+                updateNewPostText={updateNewPostText}
+              />
+            )}
           />
           <Route
             path={'/dialogs'}
