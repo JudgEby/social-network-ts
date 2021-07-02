@@ -2,19 +2,17 @@ import React from 'react'
 import s from './Profile.module.css'
 import MyPosts from './MyPosts/MyPosts'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
-import { ProfilePageType } from '../../redux/state'
+import { DispatchType, ProfilePageType } from '../../redux/state'
 
 type ProfilePT = {
   profilePage: ProfilePageType
-  addPost: () => void
-  updateNewPostText: (text: string) => void
+  dispatch: DispatchType
   postTextareaValue: string
 }
 
 const Profile = ({
   profilePage: { posts },
-  addPost,
-  updateNewPostText,
+  dispatch,
   postTextareaValue,
 }: ProfilePT) => {
   return (
@@ -22,8 +20,7 @@ const Profile = ({
       <ProfileInfo />
       <MyPosts
         posts={posts}
-        addPostCallback={addPost}
-        updateNewPostTextCallback={updateNewPostText}
+        dispatch={dispatch}
         postTextareaValue={postTextareaValue}
       />
     </div>

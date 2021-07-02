@@ -1,21 +1,20 @@
 import React, { ChangeEvent } from 'react'
 import s from './MyPosts.module.css'
 import Post from './Post/Post'
-import { PostType } from '../../../redux/state'
+import {
+  addPostActionCreator,
+  DispatchType,
+  PostType,
+  updateNewPostTextActionCreator,
+} from '../../../redux/state'
 
 type MyPostsPT = {
   posts: PostType[]
-  addPostCallback: () => void
-  updateNewPostTextCallback: (text: string) => void
+  dispatch: DispatchType
   postTextareaValue: string
 }
 
-const MyPosts = ({
-  posts,
-  addPostCallback,
-  updateNewPostTextCallback,
-  postTextareaValue,
-}: MyPostsPT) => {
+const MyPosts = ({ posts, dispatch, postTextareaValue }: MyPostsPT) => {
   const postsElements = posts.map((post) => (
     <Post key={post.id} message={post.message} likesCount={post.likesCount} />
   ))
@@ -24,12 +23,13 @@ const MyPosts = ({
 
   const addPost = () => {
     if (postTextareaValue) {
-      addPostCallback()
+      dispatch(addPostActionCreator())
     }
   }
 
   const onTextareaChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    updateNewPostTextCallback(event.currentTarget.value)
+    dispatch(updateNewPostTextActionCreator(event.currentTarget.value))
+    // updateNewPostTextCallback(event.currentTarget.value)
   }
 
   return (

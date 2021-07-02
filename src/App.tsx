@@ -9,12 +9,11 @@ import News from './components/News/News'
 import Music from './components/Music/Music'
 import Settings from './components/Settings/Settings'
 
-import { RootStateType } from './redux/state'
+import { DispatchType, RootStateType } from './redux/state'
 
 type AppType = {
   state: RootStateType
-  addPost: () => void
-  updateNewPostText: (text: string) => void
+  dispatch: DispatchType
 }
 
 function App({
@@ -23,8 +22,7 @@ function App({
     messagesPage,
     temp: { postTextareaValue },
   },
-  addPost,
-  updateNewPostText,
+  dispatch,
 }: AppType) {
   return (
     <BrowserRouter>
@@ -37,9 +35,8 @@ function App({
             render={() => (
               <Profile
                 profilePage={profilePage}
-                addPost={addPost}
+                dispatch={dispatch}
                 postTextareaValue={postTextareaValue}
-                updateNewPostText={updateNewPostText}
               />
             )}
           />
