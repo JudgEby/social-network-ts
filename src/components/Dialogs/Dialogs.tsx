@@ -1,15 +1,22 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import s from './Dialogs.module.css'
 import DialogItem from './DialogItem/DialogItem'
 import Message from './Message/Message'
+import { DispatchType } from '../../redux/state'
+import {
+  sendMessageActionCreator,
+  updateNewMessageBodyActionCreator,
+} from '../../redux/dialogs-reducer'
 
 type DialogsPT = {
   state: SatePT
+  dispatch: DispatchType
 }
 
 type SatePT = {
   dialogs: Array<DialogsFromPropsPT>
   messages: Array<MessagesPT>
+  newMessageBody: string
 }
 
 type DialogsFromPropsPT = {
@@ -22,7 +29,10 @@ type MessagesPT = {
   message: string
 }
 
-const Dialogs = ({ state: { dialogs, messages } }: DialogsPT) => {
+const Dialogs = ({
+  state: { dialogs, messages, newMessageBody },
+  dispatch,
+}: DialogsPT) => {
   const dialogsElements = dialogs.map((dialog) => (
     <DialogItem key={dialog.id} name={dialog.name} id={dialog.id} />
   ))
@@ -31,11 +41,14 @@ const Dialogs = ({ state: { dialogs, messages } }: DialogsPT) => {
     <Message key={message.id} message={message.message} id={message.id} />
   ))
 
-  const newMessageElement = React.createRef<HTMLTextAreaElement>()
+  const onSendMessageClick = () => {
+    if (newMessageBody) {
+      dispatch(sendMessageActionCreator())
+    }
+  }
 
-  const addPost = () => {
-    let text = newMessageElement.current?.value
-    console.log(text)
+  const onNewMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    dispatch(updateNewMessageBodyActionCreator(e.currentTarget.value))
   }
 
   return (
@@ -43,9 +56,13 @@ const Dialogs = ({ state: { dialogs, messages } }: DialogsPT) => {
       <div className={s.dialogsItems}>{dialogsElements}</div>
       <div>
         <div className={s.messages}>{messagesElements}</div>
-        <textarea ref={newMessageElement} />
+        <textarea
+          placeholder={'enter your message'}
+          value={newMessageBody}
+          onChange={onNewMessageChange}
+        />
         <div>
-          <button onClick={addPost}>Add message</button>
+          <button onClick={onSendMessageClick}>Send message</button>
         </div>
       </div>
     </div>

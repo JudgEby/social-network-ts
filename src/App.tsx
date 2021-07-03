@@ -16,14 +16,7 @@ type AppType = {
   dispatch: DispatchType
 }
 
-function App({
-  state: {
-    profilePage,
-    messagesPage,
-    temp: { postTextareaValue },
-  },
-  dispatch,
-}: AppType) {
+function App({ state: { profilePage, dialogsPage }, dispatch }: AppType) {
   return (
     <BrowserRouter>
       <div className={'app-wrapper'}>
@@ -33,16 +26,12 @@ function App({
           <Route
             path={'/profile'}
             render={() => (
-              <Profile
-                profilePage={profilePage}
-                dispatch={dispatch}
-                postTextareaValue={postTextareaValue}
-              />
+              <Profile profilePage={profilePage} dispatch={dispatch} />
             )}
           />
           <Route
             path={'/dialogs'}
-            render={() => <Dialogs state={messagesPage} />}
+            render={() => <Dialogs state={dialogsPage} dispatch={dispatch} />}
           />
           <Route path={'/news'} component={News} />
           <Route path={'/music'} component={Music} />

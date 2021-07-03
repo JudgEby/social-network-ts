@@ -1,12 +1,11 @@
 import React, { ChangeEvent } from 'react'
 import s from './MyPosts.module.css'
 import Post from './Post/Post'
+import { DispatchType, PostType } from '../../../redux/state'
 import {
   addPostActionCreator,
-  DispatchType,
-  PostType,
   updateNewPostTextActionCreator,
-} from '../../../redux/state'
+} from '../../../redux/profile-reducer'
 
 type MyPostsPT = {
   posts: PostType[]

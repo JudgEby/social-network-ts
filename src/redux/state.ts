@@ -1,23 +1,22 @@
 import { v1 } from 'uuid'
+import profileReducer from './profile-reducer'
+import dialogsReducer from './dialogs-reducer'
 
 //types
 export type RootStateType = {
   profilePage: ProfilePageType
-  messagesPage: MessagesPageType
-  temp: TempType
-}
-
-type TempType = {
-  postTextareaValue: string
+  dialogsPage: DialogsPageType
 }
 
 export type ProfilePageType = {
   posts: PostType[]
+  postTextareaValue: string
 }
 
-type MessagesPageType = {
+export type DialogsPageType = {
   dialogs: DialogsTypes[]
   messages: MessagesType[]
+  newMessageBody: string
 }
 
 export type PostType = {
@@ -31,7 +30,7 @@ type DialogsTypes = {
   name: string
 }
 
-type MessagesType = {
+export type MessagesType = {
   id: number | string
   message: string
 }
@@ -53,39 +52,47 @@ export type UpdateNewPostTextActionType = {
   payload: string
 }
 
+export type SendMessageActionType = {
+  type: 'SEND_MESSAGE'
+}
+
+export type UpdateNewMessageBodyActionType = {
+  type: 'UPDATE_NEW_MESSAGE_BODY'
+  payload: string
+}
+
 export type DispatchType = (action: ActionsType) => void
 
-export type ActionsType = AddPostActionType | UpdateNewPostTextActionType
-
-//constants
-const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
-const ADD_POST = 'ADD_POST'
+export type ActionsType =
+  | AddPostActionType
+  | UpdateNewPostTextActionType
+  | UpdateNewMessageBodyActionType
+  | SendMessageActionType
 
 //store
 let store: StoreType = {
   _state: {
     profilePage: {
       posts: [
-        { id: 1, message: 'Hi! How are you?', likesCount: 15 },
-        { id: 2, message: 'Hello! All is good!', likesCount: 10 },
+        { id: v1(), message: 'Hi! How are you?', likesCount: 15 },
+        { id: v1(), message: 'Hello! All is good!', likesCount: 10 },
       ],
+      postTextareaValue: '',
     },
-    messagesPage: {
+    dialogsPage: {
       dialogs: [
-        { id: 1, name: 'Yan' },
-        { id: 2, name: 'Los' },
-        { id: 3, name: 'Nadya' },
-        { id: 4, name: 'Zhenya' },
-        { id: 5, name: 'Mama' },
+        { id: v1(), name: 'Yan' },
+        { id: v1(), name: 'Los' },
+        { id: v1(), name: 'Nadya' },
+        { id: v1(), name: 'Zhenya' },
+        { id: v1(), name: 'Mama' },
       ],
       messages: [
-        { id: 1, message: 'Hi' },
-        { id: 2, message: 'London is a capital of Great Britain' },
-        { id: 3, message: 'Hello! Yo!' },
+        { id: v1(), message: 'Hi' },
+        { id: v1(), message: 'London is a capital of Great Britain' },
+        { id: v1(), message: 'Hello! Yo!' },
       ],
-    },
-    temp: {
-      postTextareaValue: '',
+      newMessageBody: '',
     },
   },
 
@@ -101,34 +108,10 @@ let store: StoreType = {
   },
 
   dispatch(action) {
-    switch (action.type) {
-      case 'ADD_POST':
-        const newPost: PostType = {
-          id: v1(),
-          message: this._state.temp.postTextareaValue,
-          likesCount: 0,
-        }
-        this._state.profilePage.posts.push(newPost)
-        this._state.temp.postTextareaValue = ''
-        this._callSubscriber(this._state)
-        break
-      case 'UPDATE_NEW_POST_TEXT':
-        this._state.temp.postTextareaValue = action.payload
-        this._callSubscriber(this._state)
-        break
-    }
+    this._state.profilePage = profileReducer(this._state.profilePage, action)
+    this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
+    this._callSubscriber(this._state)
   },
-}
-
-//action creators
-export const addPostActionCreator = (): AddPostActionType => {
-  return { type: ADD_POST }
-}
-
-export const updateNewPostTextActionCreator = (
-  payload: string
-): UpdateNewPostTextActionType => {
-  return { type: UPDATE_NEW_POST_TEXT, payload: payload }
 }
 
 export default store

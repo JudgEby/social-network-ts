@@ -7,13 +7,11 @@ import { DispatchType, ProfilePageType } from '../../redux/state'
 type ProfilePT = {
   profilePage: ProfilePageType
   dispatch: DispatchType
-  postTextareaValue: string
 }
 
 const Profile = ({
-  profilePage: { posts },
+  profilePage: { posts, postTextareaValue },
   dispatch,
-  postTextareaValue,
 }: ProfilePT) => {
   return (
     <div className={s.content}>
