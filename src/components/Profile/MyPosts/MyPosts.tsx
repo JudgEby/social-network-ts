@@ -1,47 +1,43 @@
 import React, { ChangeEvent } from 'react'
 import s from './MyPosts.module.css'
 import Post from './Post/Post'
-import { DispatchType, PostType } from '../../../redux/state'
-import {
-  addPostActionCreator,
-  updateNewPostTextActionCreator,
-} from '../../../redux/profile-reducer'
+import { PostType } from '../../../redux/redux-store'
 
 type MyPostsPT = {
   posts: PostType[]
-  dispatch: DispatchType
+  updateNewPostText: (text: string) => void
+  addPost: () => void
   postTextareaValue: string
 }
 
-const MyPosts = ({ posts, dispatch, postTextareaValue }: MyPostsPT) => {
+const MyPosts = ({
+  posts,
+  updateNewPostText,
+  postTextareaValue,
+  addPost,
+}: MyPostsPT) => {
   const postsElements = posts.map((post) => (
     <Post key={post.id} message={post.message} likesCount={post.likesCount} />
   ))
 
-  const newPostElement: React.RefObject<HTMLTextAreaElement> = React.createRef()
-
-  const addPost = () => {
+  const onAddPost = () => {
     if (postTextareaValue) {
-      dispatch(addPostActionCreator())
+      updateNewPostText(postTextareaValue.trim()) //убираем пробелы в начале и конце
+      addPost()
     }
   }
 
-  const onTextareaChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch(updateNewPostTextActionCreator(event.currentTarget.value))
-    // updateNewPostTextCallback(event.currentTarget.value)
+  const onAddPostChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    updateNewPostText(event.currentTarget.value)
   }
 
   return (
     <div>
       <h3>My Posts</h3>
       <div>
-        <textarea
-          ref={newPostElement}
-          onChange={onTextareaChangeHandler}
-          value={postTextareaValue}
-        />
+        <textarea onChange={onAddPostChange} value={postTextareaValue} />
         <div>
-          <button onClick={() => addPost()}>Add Post</button>
+          <button onClick={() => onAddPost()}>Add Post</button>
         </div>
       </div>
       <div>

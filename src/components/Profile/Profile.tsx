@@ -1,26 +1,18 @@
 import React from 'react'
 import s from './Profile.module.css'
-import MyPosts from './MyPosts/MyPosts'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
-import { DispatchType, ProfilePageType } from '../../redux/state'
+import MyPostsContainer from './MyPosts/MyPostsContainer'
+import { Store } from 'redux'
 
 type ProfilePT = {
-  profilePage: ProfilePageType
-  dispatch: DispatchType
+  store: Store
 }
 
-const Profile = ({
-  profilePage: { posts, postTextareaValue },
-  dispatch,
-}: ProfilePT) => {
+const Profile = () => {
   return (
     <div className={s.content}>
       <ProfileInfo />
-      <MyPosts
-        posts={posts}
-        dispatch={dispatch}
-        postTextareaValue={postTextareaValue}
-      />
+      <MyPostsContainer />
     </div>
   )
 }

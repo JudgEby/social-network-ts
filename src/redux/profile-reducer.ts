@@ -4,15 +4,24 @@ import {
   AddPostActionType,
   PostType,
   ProfilePageType,
-  SendMessageActionType,
-  UpdateNewMessageBodyActionType,
   UpdateNewPostTextActionType,
-} from './state'
+} from './redux-store'
+
+const initialState = {
+  posts: [
+    { id: v1(), message: 'Hi! How are you?', likesCount: 15 },
+    { id: v1(), message: 'Hello! All is good!', likesCount: 10 },
+  ],
+  postTextareaValue: '',
+}
 
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
 const ADD_POST = 'ADD_POST'
 
-const profileReducer = (state: ProfilePageType, action: ActionsType) => {
+const profileReducer = (
+  state: ProfilePageType = initialState,
+  action: ActionsType
+) => {
   switch (action.type) {
     case ADD_POST:
       const newPost: PostType = {
