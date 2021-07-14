@@ -21,7 +21,7 @@ const ADD_POST = 'ADD_POST'
 const profileReducer = (
   state: ProfilePageType = initialState,
   action: ActionsType
-) => {
+): ProfilePageType => {
   switch (action.type) {
     case ADD_POST:
       const newPost: PostType = {
@@ -29,12 +29,13 @@ const profileReducer = (
         message: state.postTextareaValue,
         likesCount: 0,
       }
-      state.posts.push(newPost)
-      state.postTextareaValue = ''
-      return state
+      return {
+        ...state,
+        posts: [...state.posts, newPost],
+        postTextareaValue: '',
+      }
     case UPDATE_NEW_POST_TEXT:
-      state.postTextareaValue = action.payload
-      return state
+      return { ...state, postTextareaValue: action.payload }
     default:
       return state
   }
