@@ -1,13 +1,32 @@
 import { v1 } from 'uuid'
-import {
-  ActionsType,
-  DialogsPageType,
-  MessagesType,
-  SendMessageActionType,
-  UpdateNewMessageBodyActionType,
-} from './redux-store'
+import { ActionsType } from './redux-store'
 
-const initialState = {
+export type DialogsPageType = {
+  dialogs: DialogType[]
+  messages: MessageType[]
+  newMessageBody: string
+}
+
+export type DialogType = {
+  id: string
+  name: string
+}
+
+export type MessageType = {
+  id: string
+  message: string
+}
+
+export type SendMessageActionType = {
+  type: 'SEND_MESSAGE'
+}
+
+export type UpdateNewMessageBodyActionType = {
+  type: 'UPDATE_NEW_MESSAGE_BODY'
+  payload: string
+}
+
+const initialState: DialogsPageType = {
   dialogs: [
     { id: v1(), name: 'Yan' },
     { id: v1(), name: 'Los' },
@@ -32,7 +51,7 @@ const dialogsReducer = (
 ): DialogsPageType => {
   switch (action.type) {
     case SEND_MESSAGE:
-      const newMessage: MessagesType = {
+      const newMessage = {
         id: v1(),
         message: state.newMessageBody,
       }

@@ -4,6 +4,10 @@
     padding: 20px;
 }
 
+.nav div {
+    margin: 10px 0;
+}
+
 .nav a {
     color: #000000;
     text-decoration: none;
