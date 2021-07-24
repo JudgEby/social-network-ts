@@ -13,11 +13,13 @@ export type UsersPageType = {
 }
 
 export type UserType = {
+  name: string
   id: string
-  photoUrl: string
-  fullName: string
+  photos: {
+    small: 'string'
+    large: 'string'
+  }
   status: string
-  location: { city: string; country: string }
   followed: boolean
 }
 
