@@ -12,6 +12,8 @@ import dialogsReducer, {
 } from './dialogs-reducer'
 import usersReducer, {
   FollowActionType,
+  SetCurrentPageType,
+  SetTotalUsersCountType,
   SetUsersActionType,
   UnfollowActionType,
   UsersPageType,
@@ -31,6 +33,8 @@ export type ActionsType =
   | FollowActionType
   | UnfollowActionType
   | SetUsersActionType
+  | SetCurrentPageType
+  | SetTotalUsersCountType
 
 const rootReducer = combineReducers({
   profilePage: profileReducer,
