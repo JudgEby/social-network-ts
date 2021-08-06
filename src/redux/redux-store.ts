@@ -15,6 +15,7 @@ import usersReducer, {
   SetCurrentPageType,
   SetTotalUsersCountType,
   SetUsersActionType,
+  ToggleIsFetchingAT,
   UnfollowActionType,
   UsersPageType,
 } from './users-reducer'
@@ -35,6 +36,7 @@ export type ActionsType =
   | SetUsersActionType
   | SetCurrentPageType
   | SetTotalUsersCountType
+  | ToggleIsFetchingAT
 
 const rootReducer = combineReducers({
   profilePage: profileReducer,

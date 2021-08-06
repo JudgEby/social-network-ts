@@ -8,6 +8,7 @@ const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET_USERS'
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT'
+const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 
 //types
 
@@ -16,6 +17,7 @@ export type UsersPageType = {
   pageSize: number
   totalUsersCount: number
   currentPage: number
+  isFetching: boolean
 }
 
 export type UserType = {
@@ -54,11 +56,17 @@ export type SetTotalUsersCountType = {
   payload: number
 }
 
+export type ToggleIsFetchingAT = {
+  type: typeof TOGGLE_IS_FETCHING
+  payload: boolean
+}
+
 const initialState: UsersPageType = {
   users: [],
   pageSize: 5,
-  totalUsersCount: 32,
+  totalUsersCount: 0,
   currentPage: 1,
+  isFetching: false,
 }
 
 const usersReducer = (
@@ -92,31 +100,35 @@ const usersReducer = (
       }
     case SET_TOTAL_USERS_COUNT:
       return { ...state, totalUsersCount: action.payload }
+    case TOGGLE_IS_FETCHING:
+      return { ...state, isFetching: action.payload }
     default:
       return state
   }
 }
 
 //action creators
-export const followAC = (payload: string): FollowActionType => {
+export const follow = (payload: string): FollowActionType => {
   return { type: FOLLOW, payload: payload }
 }
-export const unfollowAC = (payload: string): UnfollowActionType => {
+export const unfollow = (payload: string): UnfollowActionType => {
   return { type: UNFOLLOW, payload: payload }
 }
 
-export const setUsersAC = (payload: UserType[]): SetUsersActionType => {
+export const setUsers = (payload: UserType[]): SetUsersActionType => {
   return { type: SET_USERS, payload: payload }
 }
 
-export const setCurrentPagesAC = (payload: number): SetCurrentPageType => {
+export const setCurrentPage = (payload: number): SetCurrentPageType => {
   return { type: SET_CURRENT_PAGE, payload }
 }
 
-export const setTotalUsersCountAC = (
-  payload: number
-): SetTotalUsersCountType => {
+export const setTotalUsersCount = (payload: number): SetTotalUsersCountType => {
   return { type: SET_TOTAL_USERS_COUNT, payload }
+}
+
+export const toggleIsFetching = (payload: boolean) => {
+  return { type: TOGGLE_IS_FETCHING, payload }
 }
 
 // export const updateNewPostTextActionCreator = (
