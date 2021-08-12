@@ -1,10 +1,15 @@
 import React from 'react'
-import s from './Header.module.css'
+import styles from './Header.module.css'
+import wolPic from '../../images/wolf-logo.png'
+import { NavLink } from 'react-router-dom'
+import { AuthType } from '../../redux/auth-reducer'
 
-const Header = () => {
+const Header = (props: AuthType) => {
+  const { id, login, email, isAuth } = props
   return (
-    <header className={s.header}>
-      <img src='./images/wolf-logo.png' alt='logo' />
+    <header className={styles.header}>
+      <img src={wolPic} alt='logo' />
+      {isAuth ? <div>{login}</div> : <NavLink to='/login'>Login</NavLink>}
     </header>
   )
 }

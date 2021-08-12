@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import styles from './Users.module.css'
 import defaultAvatarSmall from '../../assets/images/default-avatar-small.png'
 import { UserType } from '../../redux/users-reducer'
+import { NavLink } from 'react-router-dom'
 
 type UsersType = {
   users: UserType[]
@@ -45,11 +46,13 @@ const Users = React.memo((props: UsersType) => {
 
   const allUsers = users.map((u) => (
     <div key={u.id}>
-      <img
-        className={styles.avatar}
-        src={u.photos.small || defaultAvatarSmall}
-        alt='user'
-      />
+      <NavLink to={`/profile/${u.id}`}>
+        <img
+          className={styles.avatar}
+          src={u.photos.small || defaultAvatarSmall}
+          alt='user'
+        />
+      </NavLink>
       {u.followed ? (
         <button onClick={() => unfollow(u.id)}>Unfollow</button>
       ) : (

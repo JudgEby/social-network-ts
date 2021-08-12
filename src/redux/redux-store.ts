@@ -2,6 +2,7 @@ import { combineReducers, createStore } from 'redux'
 import {
   AddPostActionType,
   ProfilePageType,
+  SetUserProfileType,
   UpdateNewPostTextActionType,
 } from './profile-reducer'
 import profileReducer from './profile-reducer'
@@ -19,11 +20,17 @@ import usersReducer, {
   UnfollowActionType,
   UsersPageType,
 } from './users-reducer'
+import authReducer, {
+  AuthSetIsAuthActionType,
+  AuthSetUserDataActionType,
+  AuthType,
+} from './auth-reducer'
 
 export type RootStateType = {
   profilePage: ProfilePageType
   dialogsPage: DialogsPageType
   usersPage: UsersPageType
+  auth: AuthType
 }
 
 export type ActionsType =
@@ -37,13 +44,19 @@ export type ActionsType =
   | SetCurrentPageType
   | SetTotalUsersCountType
   | ToggleIsFetchingAT
+  | SetUserProfileType
+  | AuthSetUserDataActionType
+  | AuthSetIsAuthActionType
 
 const rootReducer = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
   usersPage: usersReducer,
+  auth: authReducer,
 })
 
 const store = createStore(rootReducer)
+//@ts-ignore
+window.store = store
 
 export default store
