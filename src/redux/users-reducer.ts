@@ -1,4 +1,3 @@
-import { v1 } from 'uuid'
 import { ActionsType } from './redux-store'
 
 //constants
@@ -9,6 +8,7 @@ const SET_USERS = 'SET_USERS'
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
+const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE_IS_FOLLOWING_PROGRESS'
 
 //types
 
@@ -18,6 +18,7 @@ export type UsersPageType = {
   totalUsersCount: number
   currentPage: number
   isFetching: boolean
+  followingInProgress: string[]
 }
 
 export type UserType = {
@@ -60,6 +61,10 @@ export type ToggleIsFetchingAT = {
   type: typeof TOGGLE_IS_FETCHING
   payload: boolean
 }
+export type ToggleIsFollowingInProgressAT = {
+  type: typeof TOGGLE_IS_FOLLOWING_PROGRESS
+  payload: { userId: string; isFollowing: boolean }
+}
 
 const initialState: UsersPageType = {
   users: [],
@@ -67,6 +72,7 @@ const initialState: UsersPageType = {
   totalUsersCount: 0,
   currentPage: 1,
   isFetching: false,
+  followingInProgress: [],
 }
 
 const usersReducer = (
@@ -102,6 +108,16 @@ const usersReducer = (
       return { ...state, totalUsersCount: action.payload }
     case TOGGLE_IS_FETCHING:
       return { ...state, isFetching: action.payload }
+    case TOGGLE_IS_FOLLOWING_PROGRESS: {
+      return {
+        ...state,
+        followingInProgress: action.payload.isFollowing
+          ? [...state.followingInProgress, action.payload.userId]
+          : state.followingInProgress.filter(
+              (id) => id !== action.payload.userId
+            ),
+      }
+    }
     default:
       return state
   }
@@ -127,8 +143,15 @@ export const setTotalUsersCount = (payload: number): SetTotalUsersCountType => {
   return { type: SET_TOTAL_USERS_COUNT, payload }
 }
 
-export const toggleIsFetching = (payload: boolean) => {
+export const toggleIsFetching = (payload: boolean): ToggleIsFetchingAT => {
   return { type: TOGGLE_IS_FETCHING, payload }
+}
+
+export const toggleFollowingInProgress = (payload: {
+  userId: string
+  isFollowing: boolean
+}): ToggleIsFollowingInProgressAT => {
+  return { type: TOGGLE_IS_FOLLOWING_PROGRESS, payload }
 }
 
 // export const updateNewPostTextActionCreator = (

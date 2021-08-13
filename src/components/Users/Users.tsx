@@ -3,6 +3,7 @@ import styles from './Users.module.css'
 import defaultAvatarSmall from '../../assets/images/default-avatar-small.png'
 import { UserType } from '../../redux/users-reducer'
 import { NavLink } from 'react-router-dom'
+import { followAPI } from '../../api/api'
 
 type UsersType = {
   users: UserType[]
@@ -12,6 +13,11 @@ type UsersType = {
   follow: (id: string) => void
   unfollow: (id: string) => void
   onPageClick: (page: number) => void
+  followingInProgress: string[]
+  toggleFollowingInProgress: (payload: {
+    userId: string
+    isFollowing: boolean
+  }) => void
 }
 
 const Users = React.memo((props: UsersType) => {
@@ -23,6 +29,8 @@ const Users = React.memo((props: UsersType) => {
     totalUsersCount,
     currentPage,
     onPageClick,
+    followingInProgress,
+    toggleFollowingInProgress,
   } = props
 
   const pages = ((pageSize: number) => {
@@ -54,9 +62,35 @@ const Users = React.memo((props: UsersType) => {
         />
       </NavLink>
       {u.followed ? (
-        <button onClick={() => unfollow(u.id)}>Unfollow</button>
+        <button
+          disabled={followingInProgress.some((id) => id === u.id)}
+          onClick={() => {
+            toggleFollowingInProgress({ userId: u.id, isFollowing: true })
+            followAPI.unfollow(u.id).then((resultCode) => {
+              if (resultCode === 0) {
+                unfollow(u.id)
+              }
+              toggleFollowingInProgress({ userId: u.id, isFollowing: false })
+            })
+          }}
+        >
+          Unfollow
+        </button>
       ) : (
-        <button onClick={() => follow(u.id)}>Follow</button>
+        <button
+          disabled={followingInProgress.some((id) => id === u.id)}
+          onClick={() => {
+            toggleFollowingInProgress({ userId: u.id, isFollowing: true })
+            followAPI.follow(u.id).then((resultCode) => {
+              if (resultCode === 0) {
+                follow(u.id)
+              }
+              toggleFollowingInProgress({ userId: u.id, isFollowing: false })
+            })
+          }}
+        >
+          Follow
+        </button>
       )}
       <div>Status: {u.followed ? 'Подписан' : 'Не подписан'}</div>
       <div>

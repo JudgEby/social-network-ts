@@ -45,11 +45,14 @@ const Dialogs = ({
     //dispatch(updateNewMessageBodyActionCreator(e.currentTarget.value))
   }
 
+  const a = 23
+  const b = false
   return (
     <div className={s.dialogs}>
       <div className={s.dialogsItems}>{dialogsElements}</div>
       <div>
         <div className={s.messages}>{messagesElements}</div>
+
         <textarea
           placeholder={'enter your message'}
           value={newMessageBody}
@@ -58,6 +61,7 @@ const Dialogs = ({
         <div>
           <button onClick={onAddMessage}>Send message</button>
         </div>
+        <div className={s.test}>{`Lox ${b && a + 3}`}</div>
       </div>
     </div>
   )
