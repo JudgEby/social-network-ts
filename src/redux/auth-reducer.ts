@@ -1,4 +1,6 @@
+import { Dispatch } from 'redux'
 import { ActionsType } from './redux-store'
+import { authAPI } from '../api/api'
 
 //constants
 
@@ -64,6 +66,15 @@ export type AuthSetIsAuthActionType = {
 
 export const setIsAuth = (isAuth: boolean): AuthSetIsAuthActionType => {
   return { type: AUTH_ACTIONS_TYPES.SET_IS_AUTH, payload: isAuth }
+}
+
+export const getAuthUserData = () => (dispatch: Dispatch<ActionsType>) => {
+  authAPI.getMe().then((response) => {
+    if (response.data.resultCode === 0) {
+      dispatch(setAuthUserData(response.data.data))
+      dispatch(setIsAuth(true))
+    }
+  })
 }
 
 export default authReducer

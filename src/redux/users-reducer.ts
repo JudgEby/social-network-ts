@@ -1,4 +1,6 @@
 import { ActionsType } from './redux-store'
+import { Dispatch } from 'redux'
+import { usersAPI } from '../api/api'
 
 //constants
 
@@ -153,6 +155,47 @@ export const toggleFollowingInProgress = (payload: {
 }): ToggleIsFollowingInProgressAT => {
   return { type: TOGGLE_IS_FOLLOWING_PROGRESS, payload }
 }
+
+//thunks
+
+export const getUsers =
+  (currentPage: number, pageSize: number) =>
+  (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setCurrentPage(currentPage))
+    dispatch(toggleIsFetching(true))
+
+    usersAPI.getUsers(currentPage, pageSize).then((data) => {
+      dispatch(setUsers(data.items))
+      dispatch(setTotalUsersCount(data.totalCount))
+      dispatch(toggleIsFetching(false))
+    })
+  }
+
+export const followUser =
+  (userId: string) => (dispatch: Dispatch<ActionsType>) => {
+    dispatch(toggleFollowingInProgress({ userId: userId, isFollowing: true }))
+    usersAPI.follow(userId).then((resultCode) => {
+      if (resultCode === 0) {
+        dispatch(follow(userId))
+      }
+      dispatch(
+        toggleFollowingInProgress({ userId: userId, isFollowing: false })
+      )
+    })
+  }
+
+export const unfollowUser =
+  (userId: string) => (dispatch: Dispatch<ActionsType>) => {
+    dispatch(toggleFollowingInProgress({ userId: userId, isFollowing: true }))
+    usersAPI.unfollow(userId).then((resultCode) => {
+      if (resultCode === 0) {
+        dispatch(unfollow(userId))
+      }
+      dispatch(
+        toggleFollowingInProgress({ userId: userId, isFollowing: false })
+      )
+    })
+  }
 
 // export const updateNewPostTextActionCreator = (
 //   payload: string

@@ -1,5 +1,7 @@
 import { v1 } from 'uuid'
 import { ActionsType } from './redux-store'
+import { Dispatch } from 'redux'
+import { usersAPI } from '../api/api'
 
 export type ProfilePageType = {
   posts: PostType[]
@@ -127,5 +129,12 @@ export const setUserProfile = (
 ): SetUserProfileType => {
   return { type: PROFILE_PAGE_ACTIONS_TYPE.SET_USER_PROFILE, payload }
 }
+
+export const getUserProfile =
+  (userId: string) => (dispatch: Dispatch<ActionsType>) => {
+    usersAPI
+      .getProfile(userId)
+      .then((profile) => dispatch(setUserProfile(profile)))
+  }
 
 export default profileReducer

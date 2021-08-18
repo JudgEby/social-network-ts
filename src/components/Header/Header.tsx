@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { AuthType } from '../../redux/auth-reducer'
 
 const Header = (props: AuthType) => {
-  const { id, login, email, isAuth } = props
+  const { login, isAuth } = props
   return (
     <header className={styles.header}>
       <img src={wolPic} alt='logo' />
