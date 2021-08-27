@@ -1,62 +1,42 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
-import {
-  AddPostActionType,
-  ProfilePageType,
-  SetUserProfileType,
-  UpdateNewPostTextActionType,
-} from './profile-reducer'
 import profileReducer from './profile-reducer'
 import dialogsReducer, {
-  DialogsPageType,
-  SendMessageActionType,
-  UpdateNewMessageBodyActionType,
+	DialogsPageType,
+	SendMessageActionType,
+	UpdateNewMessageBodyActionType,
 } from './dialogs-reducer'
 import usersReducer, {
-  FollowActionType,
-  SetCurrentPageType,
-  SetTotalUsersCountType,
-  SetUsersActionType,
-  ToggleIsFetchingAT,
-  ToggleIsFollowingInProgressAT,
-  UnfollowActionType,
-  UsersPageType,
+	FollowActionType,
+	SetCurrentPageType,
+	SetTotalUsersCountType,
+	SetUsersActionType,
+	ToggleIsFetchingAT,
+	ToggleIsFollowingInProgressAT,
+	UnfollowActionType,
+	UsersPageType,
 } from './users-reducer'
-import authReducer, {
-  AuthSetIsAuthActionType,
-  AuthSetUserDataActionType,
-  AuthType,
-} from './auth-reducer'
+import authReducer from './auth-reducer'
 import thunkMiddleware from 'redux-thunk'
 
-export type RootStateType = {
-  profilePage: ProfilePageType
-  dialogsPage: DialogsPageType
-  usersPage: UsersPageType
-  auth: AuthType
-}
-
 export type ActionsType =
-  | AddPostActionType
-  | UpdateNewPostTextActionType
-  | UpdateNewMessageBodyActionType
-  | SendMessageActionType
-  | FollowActionType
-  | UnfollowActionType
-  | SetUsersActionType
-  | SetCurrentPageType
-  | SetTotalUsersCountType
-  | ToggleIsFetchingAT
-  | SetUserProfileType
-  | AuthSetUserDataActionType
-  | AuthSetIsAuthActionType
-  | ToggleIsFollowingInProgressAT
+	| UpdateNewMessageBodyActionType
+	| SendMessageActionType
+	| FollowActionType
+	| UnfollowActionType
+	| SetUsersActionType
+	| SetCurrentPageType
+	| SetTotalUsersCountType
+	| ToggleIsFetchingAT
+	| ToggleIsFollowingInProgressAT
 
 const rootReducer = combineReducers({
-  profilePage: profileReducer,
-  dialogsPage: dialogsReducer,
-  usersPage: usersReducer,
-  auth: authReducer,
+	profilePage: profileReducer,
+	dialogsPage: dialogsReducer,
+	usersPage: usersReducer,
+	auth: authReducer,
 })
+
+export type RootStateType = ReturnType<typeof rootReducer>
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
 //@ts-ignore

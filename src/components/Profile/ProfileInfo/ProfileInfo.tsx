@@ -1,9 +1,17 @@
 import React from 'react'
 import styles from './ProfileInfo.module.css'
-import { UserProfileType } from '../../../redux/profile-reducer'
+import {
+  updateUserStatus,
+  UserProfileType,
+} from '../../../redux/profile-reducer'
 import Preloader from '../../common/Preloader/Preloader'
+import ProfileStatus from './ProfileStatus'
 
-type ProfileInfoType = UserProfileType
+type ProfileInfoType = {
+  profile: UserProfileType
+  status: string
+  updateUserStatus: (status: string) => void
+}
 
 const ProfileInfo = (props: ProfileInfoType) => {
   const {
@@ -22,7 +30,10 @@ const ProfileInfo = (props: ProfileInfoType) => {
       mainLink,
     },
     photos: { small, large },
-  } = props
+    aboutMe,
+  } = props.profile
+
+  const { status, updateUserStatus } = props
 
   if (!userId) {
     return <Preloader />
@@ -82,6 +93,8 @@ const ProfileInfo = (props: ProfileInfoType) => {
         alt='lake'
       />
       <h2>{fullName}</h2>
+      <ProfileStatus status={status} updateUserStatus={updateUserStatus} />
+      {aboutMe && <div>{aboutMe}</div>}
       {lookingForAJob && (
         <div>
           <span className={styles.lookingForAJob}>Ищу работу</span>

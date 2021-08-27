@@ -30,12 +30,7 @@ const Dialogs = React.memo(
     sendMessage,
     dialogs,
     messages,
-    isAuth,
   }: DialogsPT) => {
-    if (!isAuth) {
-      return <Redirect to={'/login'} />
-    }
-
     const dialogsElements = dialogs.map((dialog) => (
       <DialogItem key={dialog.id} name={dialog.name} id={dialog.id} />
     ))
@@ -50,7 +45,6 @@ const Dialogs = React.memo(
 
     const onNewMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
       updateNewMessageBody(e.currentTarget.value)
-      //dispatch(updateNewMessageBodyActionCreator(e.currentTarget.value))
     }
 
     const a = 23

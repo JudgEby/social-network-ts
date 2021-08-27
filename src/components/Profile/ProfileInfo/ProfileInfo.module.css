@@ -3,14 +3,24 @@
 }
 
 .lookingForAJob {
-    margin-right: 20px;
-    background-color: #4afa88;
+	margin-right: 20px;
+	background-color: #4afa88;
 }
 
 .contactsLabel {
-    margin-right: 20px;
+	margin-right: 20px;
 }
 
 .socials {
-    margin-right: 10px;
+	margin-right: 10px;
+}
+
+.status {
+	margin-bottom: 20px;
+	display: inline-block;
+	background-color: #9ef3e8;
+}
+
+.status:hover {
+	cursor: pointer;
 }
