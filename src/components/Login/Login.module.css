@@ -1,0 +1,9 @@
+.summaryError {
+	border: 2px solid red;
+	border-radius: 20px;
+}
+
+.emailAndPassWrapper {
+	padding: 20px;
+	display: inline-block;
+}

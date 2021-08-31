@@ -1,0 +1,40 @@
+.formControl {
+
+}
+
+.formControl textarea{
+	border: 2px solid grey;
+	border-radius: 4px;
+	font-size: 1rem;
+	margin: 0.25rem;
+	min-width: 125px;
+	padding: 0.5rem;
+	transition: border-color 0.5s ease-out;
+}
+
+.formControl input{
+	border: 2px solid grey;
+	border-radius: 4px;
+	font-size: 1rem;
+	margin: 0.25rem;
+	min-width: 125px;
+	padding: 0.5rem;
+	transition: border-color 0.5s ease-out;
+}
+
+
+.formControl.error textarea {
+	border: 2px solid red;
+}
+
+.formControl.error input {
+	border: 2px solid red;
+}
+
+.formControl.error span {
+	color: red;
+}
+
+textarea:focus, input:focus{
+	outline: none;
+}

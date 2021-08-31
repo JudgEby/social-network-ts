@@ -4,7 +4,6 @@ import { profileAPI } from '../api/api'
 
 export type ProfilePageType = {
 	posts: PostType[]
-	postTextareaValue: string
 	userProfile: UserProfileType
 	status: string
 }
@@ -15,10 +14,9 @@ export type PostType = {
 	likesCount: number
 }
 
-type ActionsType =
+export type ProfileActionsType =
 	| ReturnType<typeof setUserStatus>
 	| ReturnType<typeof addPostActionCreator>
-	| ReturnType<typeof updateNewPostTextActionCreator>
 	| ReturnType<typeof setUserProfile>
 
 export type UserProfileType = {
@@ -63,28 +61,24 @@ const initialState: ProfilePageType = {
 		userId: '',
 		photos: { small: '', large: '' },
 	},
-	postTextareaValue: '',
 	status: '',
 }
 
 const profileReducer = (
 	state: ProfilePageType = initialState,
-	action: ActionsType
+	action: ProfileActionsType
 ): ProfilePageType => {
 	switch (action.type) {
 		case 'PROFILE_PAGE_ACTIONS_TYPE/ADD_POST':
 			const newPost = {
 				id: v1(),
-				message: state.postTextareaValue,
+				message: action.postTextareaValue,
 				likesCount: 0,
 			}
 			return {
 				...state,
 				posts: [...state.posts, newPost],
-				postTextareaValue: '',
 			}
-		case 'PROFILE_PAGE_ACTIONS_TYPE/UPDATE_NEW_POST_TEXT':
-			return { ...state, postTextareaValue: action.payload }
 		case 'PROFILE_PAGE_ACTIONS_TYPE/SET_USER_PROFILE':
 			return {
 				...state,
@@ -101,13 +95,8 @@ const profileReducer = (
 }
 
 //action creators
-export const addPostActionCreator = () =>
-	({ type: 'PROFILE_PAGE_ACTIONS_TYPE/ADD_POST' } as const)
-export const updateNewPostTextActionCreator = (payload: string) =>
-	({
-		type: 'PROFILE_PAGE_ACTIONS_TYPE/UPDATE_NEW_POST_TEXT',
-		payload,
-	} as const)
+export const addPostActionCreator = (postTextareaValue: string) =>
+	({ type: 'PROFILE_PAGE_ACTIONS_TYPE/ADD_POST', postTextareaValue } as const)
 export const setUserProfile = (payload: UserProfileType) =>
 	({
 		type: 'PROFILE_PAGE_ACTIONS_TYPE/SET_USER_PROFILE',

@@ -1,39 +1,30 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
-import profileReducer from './profile-reducer'
-import dialogsReducer, {
-	DialogsPageType,
-	SendMessageActionType,
-	UpdateNewMessageBodyActionType,
-} from './dialogs-reducer'
-import usersReducer, {
-	FollowActionType,
-	SetCurrentPageType,
-	SetTotalUsersCountType,
-	SetUsersActionType,
-	ToggleIsFetchingAT,
-	ToggleIsFollowingInProgressAT,
-	UnfollowActionType,
-	UsersPageType,
-} from './users-reducer'
-import authReducer from './auth-reducer'
-import thunkMiddleware from 'redux-thunk'
+import profileReducer, { ProfileActionsType } from './profile-reducer'
+import dialogsReducer, { DialogsActionsType } from './dialogs-reducer'
+import usersReducer, { UsersActionsType } from './users-reducer'
+import authReducer, { AuthActionsType } from './auth-reducer'
+import thunkMiddleware, { ThunkAction } from 'redux-thunk'
+import { reducer as formReducer } from 'redux-form'
 
-export type ActionsType =
-	| UpdateNewMessageBodyActionType
-	| SendMessageActionType
-	| FollowActionType
-	| UnfollowActionType
-	| SetUsersActionType
-	| SetCurrentPageType
-	| SetTotalUsersCountType
-	| ToggleIsFetchingAT
-	| ToggleIsFollowingInProgressAT
+export type RootReducersActionsType =
+	| AuthActionsType
+	| DialogsActionsType
+	| UsersActionsType
+	| ProfileActionsType
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+	ReturnType,
+	RootStateType,
+	unknown,
+	RootReducersActionsType
+>
 
 const rootReducer = combineReducers({
 	profilePage: profileReducer,
 	dialogsPage: dialogsReducer,
 	usersPage: usersReducer,
 	auth: authReducer,
+	form: formReducer,
 })
 
 export type RootStateType = ReturnType<typeof rootReducer>

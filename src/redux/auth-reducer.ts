@@ -1,8 +1,9 @@
-import { Dispatch } from 'redux'
 import { authAPI } from '../api/api'
+import { AppThunk } from './redux-store'
+import { stopSubmit } from 'redux-form'
 
 //types
-type ActionsType =
+export type AuthActionsType =
 	| ReturnType<typeof setAuthUserData>
 	| ReturnType<typeof setIsAuth>
 
@@ -22,7 +23,7 @@ const initialState: AuthType = {
 
 const authReducer = (
 	state: AuthType = initialState,
-	action: ActionsType
+	action: AuthActionsType
 ): AuthType => {
 	switch (action.type) {
 		case 'AUTH_ACTIONS_TYPES/SET_USER_DATA': {
@@ -38,16 +39,16 @@ const authReducer = (
 
 //action creators
 export const setAuthUserData = (payload: {
-	id: number
-	login: string
-	email: string
+	id: number | null
+	login: string | null
+	email: string | null
 }) => ({ type: 'AUTH_ACTIONS_TYPES/SET_USER_DATA', payload } as const)
 export const setIsAuth = (isAuth: boolean) =>
 	({ type: 'AUTH_ACTIONS_TYPES/SET_IS_AUTH', payload: isAuth } as const)
 
 //thunks
-export const getAuthUserData = () => (dispatch: Dispatch<ActionsType>) => {
-	authAPI.getMe().then((response) => {
+export const getAuthUserData = (): AppThunk => dispatch => {
+	authAPI.getMe().then(response => {
 		if (response.data.resultCode === 0) {
 			dispatch(setAuthUserData(response.data.data))
 			dispatch(setIsAuth(true))
@@ -55,6 +56,50 @@ export const getAuthUserData = () => (dispatch: Dispatch<ActionsType>) => {
 			dispatch(setIsAuth(false))
 		}
 	})
+}
+export const login =
+	(
+		email: string,
+		password: string,
+		rememberMe?: boolean,
+		captcha?: boolean
+	): AppThunk =>
+	async dispatch => {
+		try {
+			const response = await authAPI.login(
+				email,
+				password,
+				rememberMe,
+				captcha
+			)
+			if (response.data.resultCode === 0) {
+				dispatch(getAuthUserData())
+			}
+			if (response.data.resultCode === 1) {
+				dispatch(
+					stopSubmit('login', {
+						_error: 'Email or password are wrong',
+					})
+				)
+			}
+			if (response.data.resultCode === 10) {
+				dispatch(
+					stopSubmit('login', {
+						_error: 'Captcha error',
+					})
+				)
+			}
+		} catch (e) {}
+	}
+
+export const logout = (): AppThunk => async dispatch => {
+	try {
+		const response = await authAPI.logout()
+		if (response.data.resultCode === 0) {
+			dispatch(setAuthUserData({ id: null, login: null, email: null }))
+			dispatch(setIsAuth(false))
+		}
+	} catch (e) {}
 }
 
 export default authReducer

@@ -1,33 +1,25 @@
-import {
-  addPostActionCreator,
-  updateNewPostTextActionCreator,
-} from '../../../redux/profile-reducer'
+import { addPostActionCreator } from '../../../redux/profile-reducer'
 import MyPosts from './MyPosts'
 import { connect } from 'react-redux'
 import { RootStateType } from '../../../redux/redux-store'
 import { Dispatch } from 'redux'
 
 type MapDispatchToPropsType = {
-  updateNewPostText: (text: string) => void
-  addPost: () => void
+	addPost: (text: string) => void
 }
 
 const mapStateToProps = (state: RootStateType) => {
-  return {
-    posts: state.profilePage.posts,
-    postTextareaValue: state.profilePage.postTextareaValue,
-  }
+	return {
+		posts: state.profilePage.posts,
+	}
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
-  return {
-    updateNewPostText: (text: string) => {
-      dispatch(updateNewPostTextActionCreator(text))
-    },
-    addPost: () => {
-      dispatch(addPostActionCreator())
-    },
-  }
+	return {
+		addPost: (text: string) => {
+			dispatch(addPostActionCreator(text))
+		},
+	}
 }
 
 const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts)

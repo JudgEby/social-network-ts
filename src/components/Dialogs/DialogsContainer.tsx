@@ -1,7 +1,4 @@
-import {
-  sendMessageActionCreator,
-  updateNewMessageBodyActionCreator,
-} from '../../redux/dialogs-reducer'
+import { sendMessageActionCreator } from '../../redux/dialogs-reducer'
 import { compose, Dispatch } from 'redux'
 import Dialogs from './Dialogs'
 import { connect } from 'react-redux'
@@ -10,30 +7,25 @@ import withAuthRedirect from '../../hocs/AuthRedirect'
 import React from 'react'
 
 type MapDispatchToPropsType = {
-  updateNewMessageBody: (text: string) => void
-  sendMessage: () => void
+	sendMessage: (text: string) => void
 }
 
 const mapStateToProps = (state: RootStateType) => {
-  return {
-    dialogs: state.dialogsPage.dialogs,
-    messages: state.dialogsPage.messages,
-    newMessageBody: state.dialogsPage.newMessageBody,
-  }
+	return {
+		dialogs: state.dialogsPage.dialogs,
+		messages: state.dialogsPage.messages,
+	}
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
-  return {
-    updateNewMessageBody: (text: string) => {
-      dispatch(updateNewMessageBodyActionCreator(text))
-    },
-    sendMessage: () => {
-      dispatch(sendMessageActionCreator())
-    },
-  }
+	return {
+		sendMessage: (text: string) => {
+			dispatch(sendMessageActionCreator(text))
+		},
+	}
 }
 
 export default compose<React.ComponentType>(
-  withAuthRedirect,
-  connect(mapStateToProps, mapDispatchToProps)
+	withAuthRedirect,
+	connect(mapStateToProps, mapDispatchToProps)
 )(Dialogs)
