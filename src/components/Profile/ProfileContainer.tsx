@@ -15,9 +15,7 @@ class ProfileContainer extends React.Component<any, any> {
 	componentDidMount() {
 		const userIdFromRouter =
 			this.props.match.params.userId ||
-			(this.props.isAuth &&
-				this.props.authorizedId &&
-				this.props.authorizedId)
+			(this.props.isAuth && this.props.authorizedId)
 		this.props.getUserProfile(userIdFromRouter)
 		this.props.getUserStatus(userIdFromRouter)
 	}

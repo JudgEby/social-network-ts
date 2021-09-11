@@ -47,15 +47,25 @@ export const setIsAuth = (isAuth: boolean) =>
 	({ type: 'AUTH_ACTIONS_TYPES/SET_IS_AUTH', payload: isAuth } as const)
 
 //thunks
-export const getAuthUserData = (): AppThunk => dispatch => {
-	authAPI.getMe().then(response => {
+export const getAuthUserData = (): AppThunk => async dispatch => {
+	try {
+		const response = await authAPI.getMe()
 		if (response.data.resultCode === 0) {
 			dispatch(setAuthUserData(response.data.data))
 			dispatch(setIsAuth(true))
 		} else {
 			dispatch(setIsAuth(false))
 		}
-	})
+	} catch (e) {}
+
+	// return authAPI.getMe().then(response => {
+	// 	if (response.data.resultCode === 0) {
+	// 		dispatch(setAuthUserData(response.data.data))
+	// 		dispatch(setIsAuth(true))
+	// 	} else {
+	// 		dispatch(setIsAuth(false))
+	// 	}
+	// })
 }
 export const login =
 	(

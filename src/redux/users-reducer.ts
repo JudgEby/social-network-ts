@@ -48,14 +48,14 @@ const usersReducer = (
 		case 'USERS/FOLLOW':
 			return {
 				...state,
-				users: state.users.map((u) =>
+				users: state.users.map(u =>
 					u.id === action.payload ? { ...u, followed: true } : u
 				),
 			}
 		case 'USERS/UNFOLLOW':
 			return {
 				...state,
-				users: state.users.map((u) =>
+				users: state.users.map(u =>
 					u.id === action.payload ? { ...u, followed: false } : u
 				),
 			}
@@ -79,7 +79,7 @@ const usersReducer = (
 				followingInProgress: action.payload.isFollowing
 					? [...state.followingInProgress, action.payload.userId]
 					: state.followingInProgress.filter(
-							(id) => id !== action.payload.userId
+							id => id !== action.payload.userId
 					  ),
 			}
 		}
@@ -107,13 +107,13 @@ export const toggleFollowingInProgress = (payload: {
 }) => ({ type: 'USERS/TOGGLE_IS_FOLLOWING_PROGRESS', payload } as const)
 
 //thunks
-export const getUsers =
+export const requestUsers =
 	(currentPage: number, pageSize: number) =>
 	(dispatch: Dispatch<UsersActionsType>) => {
 		dispatch(setCurrentPage(currentPage))
 		dispatch(toggleIsFetching(true))
 
-		usersAPI.getUsers(currentPage, pageSize).then((data) => {
+		usersAPI.getUsers(currentPage, pageSize).then(data => {
 			dispatch(setUsers(data.items))
 			dispatch(setTotalUsersCount(data.totalCount))
 			dispatch(toggleIsFetching(false))
@@ -122,7 +122,7 @@ export const getUsers =
 export const followUser =
 	(userId: string) => (dispatch: Dispatch<UsersActionsType>) => {
 		dispatch(toggleFollowingInProgress({ userId: userId, isFollowing: true }))
-		usersAPI.follow(userId).then((resultCode) => {
+		usersAPI.follow(userId).then(resultCode => {
 			if (resultCode === 0) {
 				dispatch(follow(userId))
 			}
@@ -134,7 +134,7 @@ export const followUser =
 export const unfollowUser =
 	(userId: string) => (dispatch: Dispatch<UsersActionsType>) => {
 		dispatch(toggleFollowingInProgress({ userId: userId, isFollowing: true }))
-		usersAPI.unfollow(userId).then((resultCode) => {
+		usersAPI.unfollow(userId).then(resultCode => {
 			if (resultCode === 0) {
 				dispatch(unfollow(userId))
 			}
