@@ -1,5 +1,5 @@
-import { Dispatch } from 'redux'
 import { usersAPI } from '../api/api'
+import { AppThunk } from './redux-store'
 
 //types
 export type UsersPageType = {
@@ -108,40 +108,49 @@ export const toggleFollowingInProgress = (payload: {
 
 //thunks
 export const requestUsers =
-	(currentPage: number, pageSize: number) =>
-	(dispatch: Dispatch<UsersActionsType>) => {
-		dispatch(setCurrentPage(currentPage))
-		dispatch(toggleIsFetching(true))
+	(currentPage: number, pageSize: number): AppThunk =>
+	async dispatch => {
+		try {
+			dispatch(setCurrentPage(currentPage))
+			dispatch(toggleIsFetching(true))
 
-		usersAPI.getUsers(currentPage, pageSize).then(data => {
+			const data = await usersAPI.getUsers(currentPage, pageSize)
 			dispatch(setUsers(data.items))
 			dispatch(setTotalUsersCount(data.totalCount))
 			dispatch(toggleIsFetching(false))
-		})
+		} catch (e) {}
 	}
 export const followUser =
-	(userId: string) => (dispatch: Dispatch<UsersActionsType>) => {
-		dispatch(toggleFollowingInProgress({ userId: userId, isFollowing: true }))
-		usersAPI.follow(userId).then(resultCode => {
+	(userId: string): AppThunk =>
+	async dispatch => {
+		try {
+			dispatch(
+				toggleFollowingInProgress({ userId: userId, isFollowing: true })
+			)
+			const resultCode = await usersAPI.follow(userId)
 			if (resultCode === 0) {
 				dispatch(follow(userId))
 			}
 			dispatch(
 				toggleFollowingInProgress({ userId: userId, isFollowing: false })
 			)
-		})
+		} catch (e) {}
 	}
 export const unfollowUser =
-	(userId: string) => (dispatch: Dispatch<UsersActionsType>) => {
-		dispatch(toggleFollowingInProgress({ userId: userId, isFollowing: true }))
-		usersAPI.unfollow(userId).then(resultCode => {
+	(userId: string): AppThunk =>
+	async dispatch => {
+		try {
+			dispatch(
+				toggleFollowingInProgress({ userId: userId, isFollowing: true })
+			)
+			const resultCode = await usersAPI.unfollow(userId)
 			if (resultCode === 0) {
 				dispatch(unfollow(userId))
 			}
 			dispatch(
 				toggleFollowingInProgress({ userId: userId, isFollowing: false })
 			)
-		})
+		} catch (e) {}
 	}
 
 export default usersReducer

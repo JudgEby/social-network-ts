@@ -1,6 +1,4 @@
-import { authAPI } from '../api/api'
 import { AppThunk } from './redux-store'
-import { stopSubmit } from 'redux-form'
 import { getAuthUserData } from './auth-reducer'
 
 //types

@@ -11,7 +11,9 @@ type MyPostsPT = {
 }
 
 const MyPosts = ({ posts, addPost }: MyPostsPT) => {
-	const postsElements = posts.map((post) => (
+	console.log('render')
+
+	const postsElements = posts.map(post => (
 		<Post key={post.id} message={post.message} likesCount={post.likesCount} />
 	))
 

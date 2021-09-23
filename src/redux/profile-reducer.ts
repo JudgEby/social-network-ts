@@ -1,6 +1,6 @@
 import { v1 } from 'uuid'
-import { Dispatch } from 'redux'
 import { profileAPI } from '../api/api'
+import { AppThunk } from './redux-store'
 
 export type ProfilePageType = {
 	posts: PostType[]
@@ -107,22 +107,31 @@ export const setUserStatus = (status: string) =>
 
 //thunks
 
-export const getUserProfile = (userId: string) => (dispatch: Dispatch) => {
-	profileAPI
-		.getProfile(userId)
-		.then((profile) => dispatch(setUserProfile(profile)))
-}
+export const getUserProfile =
+	(userId: string): AppThunk =>
+	async dispatch => {
+		try {
+			const profile = await profileAPI.getProfile(userId)
+			dispatch(setUserProfile(profile))
+		} catch (e) {}
+	}
 
-export const getUserStatus = (userId: string) => (dispatch: Dispatch) => {
-	profileAPI.getStatus(userId).then((res) => {
-		dispatch(setUserStatus(res))
-	})
-}
+export const getUserStatus =
+	(userId: string): AppThunk =>
+	async dispatch => {
+		try {
+			const res = await profileAPI.getStatus(userId)
+			dispatch(setUserStatus(res))
+		} catch (e) {}
+	}
 
-export const updateUserStatus = (status: string) => (dispatch: Dispatch) => {
-	profileAPI.updateStatus(status).then(() => {
-		dispatch(setUserStatus(status))
-	})
-}
+export const updateUserStatus =
+	(status: string): AppThunk =>
+	async dispatch => {
+		try {
+			await profileAPI.updateStatus(status)
+			dispatch(setUserStatus(status))
+		} catch (e) {}
+	}
 
 export default profileReducer
