@@ -42,7 +42,7 @@ const Users = React.memo((props: UsersType) => {
 			<Paginator
 				currentPage={currentPage}
 				pageSize={pageSize}
-				totalUsersCount={totalUsersCount}
+				totalItemsCount={totalUsersCount}
 				onPageClick={onPageClick}
 			/>
 			<div>{allUsers}</div>

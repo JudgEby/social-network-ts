@@ -3,38 +3,46 @@ import styles from './Paginator.module.css'
 
 type UsersType = {
 	pageSize: number
-	totalUsersCount: number
+	totalItemsCount: number
 	currentPage: number
 	onPageClick: (page: number) => void
 }
 
 const Paginator = React.memo((props: UsersType) => {
-	const { pageSize, totalUsersCount, currentPage, onPageClick } = props
+	const { pageSize, totalItemsCount, currentPage, onPageClick } = props
 
-	const pages = (pageSize: number) => {
-		let pagesCount = Math.ceil(totalUsersCount / pageSize)
-		const result: Array<ReactElement<any, any>> = []
-		for (let i = 1; i <= pagesCount; i++) {
-			result.push(
-				<span
-					key={i}
-					className={`${styles.pageNumber} ${
-						currentPage === i && styles.selectedPage
-					} ${
-						(i - currentPage < -5 || i - currentPage > 5) && styles.hidden
-					}`}
-					onClick={() => onPageClick(i)}
-				>
-					{i}
-				</span>
-			)
+	const leftPortionPageNumber = 5
+	const rightPortionPageNumber = 5
+	const correctRightPortionPageNumber =
+		currentPage <= leftPortionPageNumber
+			? rightPortionPageNumber + (leftPortionPageNumber - currentPage) + 1
+			: rightPortionPageNumber
+
+	const pagesArray: Array<ReactElement<any, any>> = []
+	const pagesCount = Math.ceil(totalItemsCount / pageSize)
+	for (let i = 1; i <= pagesCount; i++) {
+		if (i - currentPage < -leftPortionPageNumber) {
+			continue
 		}
-		return result
+		if (i - currentPage > correctRightPortionPageNumber) {
+			break
+		}
+		pagesArray.push(
+			<span
+				key={i}
+				className={`${styles.pageNumber} ${
+					currentPage === i && styles.selectedPage
+				}`}
+				onClick={() => onPageClick(i)}
+			>
+				{i}
+			</span>
+		)
 	}
 
 	return (
 		<div>
-			<div>{pages(pageSize)}</div>
+			<div>{pagesArray}</div>
 		</div>
 	)
 })
